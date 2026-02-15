@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AEGIS Protocol{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    {% if session.get('user_id') %}
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>AEGIS</span>
+            </div>
+            <nav class="nav-menu">
+                {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin_dashboard') }}" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="{{ url_for('admin_grievances') }}" class="nav-item {% if active_page == 'grievances' %}active{% endif %}">
+                    <i class="fas fa-exclamation-circle"></i> Grievances
+                </a>
+                <a href="{{ url_for('admin_internships') }}" class="nav-item {% if active_page == 'internships' %}active{% endif %}">
+                    <i class="fas fa-briefcase"></i> Internships
+                </a>
+                <a href="{{ url_for('admin_resources') }}" class="nav-item {% if active_page == 'resources' %}active{% endif %}">
+                    <i class="fas fa-book"></i> Resources
+                </a>
+                <a href="{{ url_for('admin_users') }}" class="nav-item {% if active_page == 'users' %}active{% endif %}">
+                    <i class="fas fa-users"></i> Users
+                </a>
+                {% elif session.get('role') == 'faculty' %}
+                <a href="{{ url_for('faculty_dashboard') }}" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="{{ url_for('faculty_resources') }}" class="nav-item {% if active_page == 'resources' %}active{% endif %}">
+                    <i class="fas fa-book"></i> Resources
+                </a>
+                {% elif session.get('role') == 'student' %}
+                <a href="{{ url_for('student_dashboard') }}" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="{{ url_for('student_grievance_new') }}" class="nav-item {% if active_page == 'grievance_new' %}active{% endif %}">
+                    <i class="fas fa-plus-circle"></i> New Grievance
+                </a>
+                <a href="{{ url_for('student_grievances') }}" class="nav-item {% if active_page == 'grievances' %}active{% endif %}">
+                    <i class="fas fa-exclamation-circle"></i> My Grievances
+                </a>
+                <a href="{{ url_for('student_internships') }}" class="nav-item {% if active_page == 'internships' %}active{% endif %}">
+                    <i class="fas fa-briefcase"></i> Internships
+                </a>
+                <a href="{{ url_for('student_resources') }}" class="nav-item {% if active_page == 'resources' %}active{% endif %}">
+                    <i class="fas fa-book"></i> Resources
+                </a>
+                {% endif %}
+            </nav>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name">{{ session.get('name') }}</span>
+                    <span class="user-role">{{ session.get('role')|upper }}</span>
+                </div>
+                <a href="{{ url_for('logout') }}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </aside>
+        <main class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    {% else %}
+    {% block login_content %}{% endblock %}
+    {% endif %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

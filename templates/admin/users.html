@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}View Users - AEGIS Protocol{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>All Users</h1>
+    <p>View all registered users in the system</p>
+</div>
+
+<div class="table-container">
+    {% if users %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>#{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <span class="role-badge role-{{ user.role }}">
+                        {{ user.role|upper }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-users"></i>
+        <h3>No users found</h3>
+        <p>No users have been registered yet.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

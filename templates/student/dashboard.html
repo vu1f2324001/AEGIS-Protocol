@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - AEGIS Protocol{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Welcome, {{ session.get('name') }}!</h1>
+    <p>Here's an overview of your campus activities</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon total">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ total }}</h3>
+            <p>Total Grievances</p>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon resolved">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ resolved }}</h3>
+            <p>Resolved Grievances</p>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon pending">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ total - resolved }}</h3>
+            <p>Pending Grievances</p>
+        </div>
+    </div>
+</div>
+
+<div class="content-grid">
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-briefcase"></i> Recent Internships</h2>
+            <a href="{{ url_for('student_internships') }}" class="btn-link">View All</a>
+        </div>
+        <div class="card-body">
+            {% if internships %}
+            <div class="internship-list">
+                {% for internship in internships %}
+                <div class="internship-item">
+                    <div class="internship-info">
+                        <h4>{{ internship.title }}</h4>
+                        <p class="company">{{ internship.company }}</p>
+                    </div>
+                    <div class="internship-deadline">
+                        <span class="deadline-label">Deadline:</span>
+                        <span class="deadline-date">{{ internship.deadline }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-message">No internships available at the moment.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-plus-circle"></i> Quick Actions</h2>
+        </div>
+        <div class="card-body">
+            <div class="quick-actions">
+                <a href="{{ url_for('student_grievance_new') }}" class="action-btn">
+                    <i class="fas fa-plus"></i>
+                    <span>Submit Grievance</span>
+                </a>
+                <a href="{{ url_for('student_grievances') }}" class="action-btn">
+                    <i class="fas fa-list"></i>
+                    <span>View Grievances</span>
+                </a>
+                <a href="{{ url_for('student_resources') }}" class="action-btn">
+                    <i class="fas fa-book"></i>
+                    <span>Browse Resources</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

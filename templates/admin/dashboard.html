@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - AEGIS Protocol{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Admin Dashboard</h1>
+    <p>Overview of campus management system</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon users">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ total_users }}</h3>
+            <p>Total Users</p>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon grievances">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ total_grievances }}</h3>
+            <p>Total Grievances</p>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon pending">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ pending_grievances }}</h3>
+            <p>Pending Grievances</p>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon resolved">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ resolved_grievances }}</h3>
+            <p>Resolved Grievances</p>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon internships">
+            <i class="fas fa-briefcase"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ total_internships }}</h3>
+            <p>Internships</p>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon resources">
+            <i class="fas fa-book"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ total_resources }}</h3>
+            <p>Resources</p>
+        </div>
+    </div>
+</div>
+
+<div class="quick-actions-grid">
+    <a href="{{ url_for('admin_grievances') }}" class="action-card">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Manage Grievances</span>
+    </a>
+    <a href="{{ url_for('admin_internships') }}" class="action-card">
+        <i class="fas fa-briefcase"></i>
+        <span>Add Internships</span>
+    </a>
+    <a href="{{ url_for('admin_resources') }}" class="action-card">
+        <i class="fas fa-upload"></i>
+        <span>Upload Resources</span>
+    </a>
+    <a href="{{ url_for('admin_users') }}" class="action-card">
+        <i class="fas fa-users"></i>
+        <span>View Users</span>
+    </a>
+</div>
+{% endblock %}

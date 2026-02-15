@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty Dashboard - AEGIS Protocol{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Welcome, {{ session.get('name') }}!</h1>
+    <p>Faculty Portal Overview</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon grievances">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ total_grievances }}</h3>
+            <p>Total Grievances</p>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon resources">
+            <i class="fas fa-book"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ total_resources }}</h3>
+            <p>Resources Uploaded</p>
+        </div>
+    </div>
+</div>
+
+<div class="quick-actions-grid">
+    <a href="{{ url_for('faculty_resources') }}" class="action-card">
+        <i class="fas fa-upload"></i>
+        <span>Upload Resources</span>
+    </a>
+    <a href="{{ url_for('student_grievances') }}" class="action-card">
+        <i class="fas fa-eye"></i>
+        <span>View Grievances</span>
+    </a>
+</div>
+{% endblock %}

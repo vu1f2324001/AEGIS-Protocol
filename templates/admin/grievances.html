@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Grievances - AEGIS Protocol{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Manage Grievances</h1>
+    <p>View and update student grievances</p>
+</div>
+
+<div class="table-container">
+    {% if grievances %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Email</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Admin Remark</th>
+                <th>Submitted</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grievance in grievances %}
+            <tr>
+                <td>#{{ grievance.id }}</td>
+                <td>{{ grievance.student_name }}</td>
+                <td>{{ grievance.student_email }}</td>
+                <td>{{ grievance.title }}</td>
+                <td>{{ grievance.description }}</td>
+                <td>
+                    <span class="status-badge status-{{ grievance.status|lower|replace(' ', '-') }}">
+                        {{ grievance.status }}
+                    </span>
+                </td>
+                <td>{{ grievance.admin_remark if grievance.admin_remark else '-' }}</td>
+                <td>{{ grievance.created_at }}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" 
+                            data-id="{{ grievance.id }}" 
+                            data-status="{{ grievance.status }}" 
+                            data-remark="{{ grievance.admin_remark if grievance.admin_remark else '' }}"
+                            onclick="openUpdateModal(this)">
+                        <i class="fas fa-edit"></i> Update
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <h3>No grievances found</h3>
+        <p>There are no grievances to display.</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Update Modal -->
+<div id="updateModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Update Grievance</h2>
+        <form method="POST" id="updateForm">
+            <input type="hidden" id="grievanceId" name="id">
+            
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" class="form-control">
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="admin_remark">Admin Remark</label>
+                <textarea id="admin_remark" name="admin_remark" rows="4" class="form-control" placeholder="Enter your remarks..."></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openUpdateModal(button) {
+    var id = button.getAttribute('data-id');
+    var status = button.getAttribute('data-status');
+    var remark = button.getAttribute('data-remark');
+    
+    document.getElementById('grievanceId').value = id;
+    document.getElementById('status').value = status;
+    document.getElementById('admin_remark').value = remark || '';
+    document.getElementById('updateForm').action = '/admin/grievance/update/' + id;
+    document.getElementById('updateModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('updateModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    if (event.target == document.getElementById('updateModal')) {
+        closeModal();
+    }
+}
+</script>
+{% endblock %}

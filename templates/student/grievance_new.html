@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Grievance - AEGIS Protocol{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Submit New Grievance</h1>
+    <p>Fill in the details below to submit a new grievance</p>
+</div>
+
+<div class="form-container">
+    <form method="POST" class="grievance-form">
+        <div class="form-group">
+            <label for="title">
+                <i class="fas fa-heading"></i> Title
+            </label>
+            <input type="text" id="title" name="title" required placeholder="Enter grievance title" class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label for="description">
+                <i class="fas fa-align-left"></i> Description
+            </label>
+            <textarea id="description" name="description" required placeholder="Describe your grievance in detail" rows="6" class="form-control"></textarea>
+        </div>
+        
+        <div class="form-actions">
+            <a href="{{ url_for('student_grievances') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i> Submit Grievance
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

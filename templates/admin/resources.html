@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Resources - AEGIS Protocol{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Manage Resources</h1>
+    <p>Upload and manage academic resources</p>
+</div>
+
+<div class="form-container">
+    <h3>Upload New Resource</h3>
+    <form method="POST" enctype="multipart/form-data" class="resource-form">
+        <div class="form-group">
+            <label for="title">
+                <i class="fas fa-heading"></i> Title
+            </label>
+            <input type="text" id="title" name="title" required placeholder="Enter resource title" class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label for="description">
+                <i class="fas fa-align-left"></i> Description
+            </label>
+            <textarea id="description" name="description" placeholder="Describe the resource" rows="3" class="form-control"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="file">
+                <i class="fas fa-file"></i> File
+            </label>
+            <input type="file" id="file" name="file" required class="form-control">
+            <small>Allowed formats: PDF, DOC, DOCX, TXT, PPT, PPTX, JPG, PNG</small>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-upload"></i> Upload Resource
+        </button>
+    </form>
+</div>
+
+<div class="table-container">
+    <h3>Existing Resources</h3>
+    {% if resources %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Uploaded By</th>
+                <th>Created</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resource in resources %}
+            <tr>
+                <td>#{{ resource.id }}</td>
+                <td>{{ resource.title }}</td>
+                <td>{{ resource.description if resource.description else '-' }}</td>
+                <td>{{ resource.uploader_name }}</td>
+                <td>{{ resource.created_at }}</td>
+                <td>
+                    <a href="{{ url_for('download_file', filename=resource.file_path) }}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                    <a href="{{ url_for('admin_resource_delete', id=resource.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this resource?')">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-folder-open"></i>
+        <h3>No resources found</h3>
+        <p>Upload your first resource using the form above.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
