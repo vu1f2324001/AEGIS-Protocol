@@ -1,2 +1,7 @@
 Flask==3.0.0
 SQLAlchemy==2.0.23
+# Production WSGI server
+gunicorn>=21.2.0
+
+# Security utilities
+Werkzeug>=2.3.0,<3.0.0
